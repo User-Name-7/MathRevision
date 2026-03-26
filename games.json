@@ -1,58 +1,9 @@
 [
   {
-    "id": "2048",
-    "title": "2048",
-    "description": "Join the numbers and get to the 2048 tile!",
-    "thumbnail": "https://picsum.photos/seed/2048/400/300",
-    "iframeUrl": "https://play2048.co/"
-  },
-  {
-    "id": "tetris",
-    "title": "Tetris",
-    "description": "The classic block-stacking puzzle game.",
-    "thumbnail": "https://picsum.photos/seed/tetris/400/300",
-    "iframeUrl": "https://tetris.com/play-tetris"
-  },
-  {
-    "id": "snake",
-    "title": "Snake",
-    "description": "Classic snake game. Eat the apples and grow!",
-    "thumbnail": "https://picsum.photos/seed/snake/400/300",
-    "iframeUrl": "https://www.google.com/logos/2010/pacman10-i.html"
-  },
-  {
-    "id": "flappy-bird",
-    "title": "Flappy Bird Clone",
-    "description": "Fly through the pipes without hitting them.",
-    "thumbnail": "https://picsum.photos/seed/flappy/400/300",
-    "iframeUrl": "https://flappybird.io/"
-  },
-  {
-    "id": "pacman",
-    "title": "Pac-Man",
-    "description": "Waka waka! Avoid the ghosts and eat the dots.",
-    "thumbnail": "https://picsum.photos/seed/pacman/400/300",
-    "iframeUrl": "https://www.google.com/logos/2010/pacman10-i.html"
-  },
-  {
-    "id": "minesweeper",
-    "title": "Minesweeper",
-    "description": "Clear the board without detonating any mines.",
-    "thumbnail": "https://picsum.photos/seed/mines/400/300",
-    "iframeUrl": "https://minesweeperonline.com/"
-  },
-  {
-    "id": "hole-io",
-    "title": "Hole.io",
-    "description": "Consume everything in your path as a black hole.",
-    "thumbnail": "https://picsum.photos/seed/hole/400/300",
-    "iframeUrl": "https://hole-io.com/"
-  },
-  {
-    "id": "doodle-jump",
-    "title": "Doodle Jump",
-    "description": "Jump as high as you can in this addictive platformer.",
-    "thumbnail": "https://picsum.photos/seed/doodle/400/300",
-    "iframeUrl": "https://doodlejump.io/"
+    "id": "basketball-stars",
+    "title": "Basketball Stars",
+    "description": "Show off your skills and become a basketball legend.",
+    "thumbnail": "https://picsum.photos/seed/basketball/400/300",
+    "iframeUrl": "https://sites.google.com/view/classroom6x/basketball-stars"
   }
 ]
