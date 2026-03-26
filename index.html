@@ -1,13 +1,216 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
-  </body>
-</html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Revision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .game-card:hover { transform: translateY(-5px); border-color: rgba(168, 85, 247, 0.5); }
+        iframe { background: #000; }
+    </style>
+</head>
+<body class="bg-[#0a0a0a] text-white min-h-screen selection:bg-purple-500 selection:text-white">
 
+    <!-- Header -->
+    <header class="sticky top-0 z-40 bg-[#0a0a0a]/80 backdrop-blur-md border-b border-white/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.reload()">
+                <div class="p-2 bg-purple-600 rounded-xl">
+                    <i class="fas fa-gamepad text-2xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                    Math Revision
+                </h1>
+            </div>
+
+            <div class="relative w-full md:w-96">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search games..."
+                    class="w-full bg-white/5 border border-white/10 rounded-full py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all placeholder:text-gray-600"
+                >
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h2 class="text-3xl font-bold mb-2">Featured Games</h2>
+                <p class="text-gray-400">Hand-picked unblocked games for your enjoyment.</p>
+            </div>
+            <div id="game-count" class="hidden sm:flex items-center gap-2 text-xs font-mono text-gray-500 uppercase tracking-widest">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                0 Games Available
+            </div>
+        </div>
+
+        <!-- Game Grid -->
+        <div id="game-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Games will be injected here -->
+        </div>
+
+        <div id="no-results" class="hidden text-center py-20">
+            <i class="fas fa-info-circle mx-auto text-gray-600 mb-4 text-5xl"></i>
+            <h3 class="text-xl font-medium text-gray-400">No games found matching your search.</h3>
+        </div>
+    </main>
+
+    <!-- Game Viewer Modal -->
+    <div id="game-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 md:p-8">
+        <div class="relative w-full h-full max-w-6xl bg-[#111] rounded-3xl overflow-hidden border border-white/10 flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-black/40">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-purple-600 rounded-lg">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h2 id="modal-title" class="text-xl font-bold">Game Title</h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleFullscreen()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white" title="Fullscreen">
+                        <i class="fas fa-expand text-xl"></i>
+                    </button>
+                    <button onclick="closeGame()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-gray-400 hover:text-white">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Iframe Container -->
+            <div class="flex-1 bg-black relative">
+                <iframe id="game-iframe" src="" class="w-full h-full border-none" allowfullscreen></iframe>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 bg-black/40 text-sm text-gray-500 flex justify-between items-center">
+                <p id="modal-status">Playing...</p>
+                <p class="hidden sm:block">Press ESC to exit</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 px-6 mt-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-3 opacity-50">
+                <i class="fas fa-gamepad text-xl"></i>
+                <span class="font-bold">Math Revision</span>
+            </div>
+            <div class="flex gap-8 text-sm text-gray-500">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Contact Us</a>
+            </div>
+            <p class="text-xs text-gray-600 font-mono">
+                © 2026 MATH REVISION. ALL RIGHTS RESERVED.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        let games = [];
+
+        // Load games from JSON
+        async function loadGames() {
+            try {
+                const response = await fetch('./games.json');
+                games = await response.json();
+                renderGames(games);
+            } catch (error) {
+                console.error('Error loading games:', error);
+            }
+        }
+
+        function renderGames(gamesToRender) {
+            const grid = document.getElementById('game-grid');
+            const count = document.getElementById('game-count');
+            const noResults = document.getElementById('no-results');
+            
+            grid.innerHTML = '';
+            count.innerHTML = `<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> ${gamesToRender.length} Games Available`;
+            
+            if (gamesToRender.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                gamesToRender.forEach(game => {
+                    const card = document.createElement('div');
+                    card.className = 'game-card group relative bg-white/5 border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300';
+                    card.onclick = () => openGame(game);
+                    card.innerHTML = `
+                        <div class="aspect-video relative overflow-hidden">
+                            <img src="${game.thumbnail}" alt="${game.title}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" referrerpolicy="no-referrer">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                            <div class="absolute bottom-4 left-4 right-4">
+                                <h3 class="text-lg font-bold truncate">${game.title}</h3>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-sm text-gray-400 line-clamp-2 mb-4">${game.description}</p>
+                            <button class="w-full py-2 bg-white/10 group-hover:bg-purple-600 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                                Play Now
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+        }
+
+        function openGame(game) {
+            const modal = document.getElementById('game-modal');
+            const iframe = document.getElementById('game-iframe');
+            const title = document.getElementById('modal-title');
+            const status = document.getElementById('modal-status');
+
+            title.innerText = game.title;
+            status.innerText = `Playing: ${game.title}`;
+            iframe.src = game.iframeUrl;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGame() {
+            const modal = document.getElementById('game-modal');
+            const iframe = document.getElementById('game-iframe');
+            
+            iframe.src = '';
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleFullscreen() {
+            const iframe = document.getElementById('game-iframe');
+            if (iframe.requestFullscreen) iframe.requestFullscreen();
+            else if (iframe.webkitRequestFullscreen) iframe.webkitRequestFullscreen();
+            else if (iframe.msRequestFullscreen) iframe.msRequestFullscreen();
+        }
+
+        // Search logic
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = games.filter(game => 
+                game.title.toLowerCase().includes(query) || 
+                game.description.toLowerCase().includes(query)
+            );
+            renderGames(filtered);
+        });
+
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeGame();
+        });
+
+        loadGames();
+    </script>
+</body>
+</html>
